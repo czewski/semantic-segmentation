@@ -6,7 +6,7 @@ import torch
 from PIL import Image
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-IMAGE_SIZE = 128 
+IMAGE_SIZE = 256 
 
 transform_img = transforms.Compose([
     transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),  

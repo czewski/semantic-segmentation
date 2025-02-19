@@ -16,6 +16,7 @@ def create_random_points(mask, percentage, size):
         for point in range(num_points):
             random_x, random_y = random.randint(mask.shape[-2]), random.randint(mask.shape[-1])
             random_mask[item_batch, ..., random_x, random_y] = mask[item_batch, ..., random_x, random_y] - 1
+            # everything that is 0 (class = other), will also be -1 (transforms to 255 and is ignored)
             # print(random_mask[item_batch, ..., random_x, random_y])
             # print(mask[item_batch, ..., random_x, random_y])
 
