@@ -1,5 +1,4 @@
 #torch
-# import torchvision.transforms as transforms
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
@@ -16,17 +15,14 @@ from tqdm import tqdm
 
 #local 
 from utils import dataset, random_points
+from loss import partial_cross_entropy
 
-
-## define arguments
+## define args
 parser = argparse.ArgumentParser()
-parser.add_argument('--root', default='data', help='dataset directory path')
-parser.add_argument('--batch_size', type=int, default=10, help='input batch size')
-parser.add_argument('--epoch', type=int, default=10, help='the number of epochs to train for')
-parser.add_argument('--lr', type=float, default=0.001, help='learning rate')  
-# parser.add_argument('--hidden_size', type=int, default=60, help='hidden state size of gru module')
-# parser.add_argument('--lr_dc', type=float, default=0.1, help='learning rate decay rate') #lr * lr_dc
-# parser.add_argument('--lr_dc_step', type=int, default=45, help='the number of steps after which the learning rate decay') 
+parser.add_argument('--root', default='data')
+parser.add_argument('--batch_size', type=int, default=2)
+parser.add_argument('--epoch', type=int, default=10)
+parser.add_argument('--lr', type=float, default=0.001)  
 args = parser.parse_args()
 print(args)
 
@@ -38,6 +34,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 ## load data
 ## create dataset
 ## create dataloader
+## TODO: load splitted data
 # actually using the validation split for initial shape tests
 train_dataset = dataset.LoveDADataset(root_dir=args.root, split="train", transform=True)
 train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
@@ -46,9 +43,8 @@ train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=Tru
 # test_dataset
 # test_loader
 
-## load splitted data
 
-## define model (later will implement a CNN model)
+## define model (TODO: later will implement a CNN model)
 model = models.deeplabv3_resnet50(pretrained=False)  
 model.eval() 
 #swap last layer for correct number of classes (7)
@@ -56,14 +52,15 @@ model.classifier[4] = torch.nn.Conv2d(256, 7, kernel_size=(1, 1), stride=(1, 1))
 # print(model.classifier)
 model = model.to(device)
 
-## define loss, optimizer, scheduler 
-criterion = nn.CrossEntropyLoss()
+## define loss, optimizer
+#criterion = nn.CrossEntropyLoss()
+criterion = partial_cross_entropy.PartialCrossEntropyLoss()
 optimizer = optim.Adam(params=model.parameters(), lr=args.lr)
 
-## define variable for metrics
+## TODO: define variable for metrics (right now will use only loss)
+best_valid_loss = 0
 
 ## loop data (epochs)
-# remember to use device
 for epoch in tqdm(range(args.epoch)):
     model.train()
     for i, (img, msk) in enumerate(tqdm(train_loader)):
@@ -72,9 +69,14 @@ for epoch in tqdm(range(args.epoch)):
         # print(msk.size())
 
         ## random samples for the mask 
-        random_mask = random_points.create_random_points(msk, 0.1, 1) # using 10%
+
+        # am i actually putting a lot of 0 points, but i guess it needs to be -1?
+        #because 0 is a class, no?
+        random_mask = random_points.create_random_points(msk, 0.3, 1) 
         random_mask = random_mask.squeeze(1).long().to(device=device)
-        #random_points.plot_mask(random_mask)
+        # random_points.plot_mask(random_mask, 0)
+        # random_points.plot_mask(random_mask, 1)
+
         # print(random_mask)
 
         output = model(img)['out']
@@ -88,13 +90,17 @@ for epoch in tqdm(range(args.epoch)):
 
         print(f"[TRAIN] epoch {epoch + 1}/{args.epoch} batch loss: {loss.item():.4f}")
 
+    ## TODO: validation loss
+    valid_loss = 0
 
-    ## validation
     ## save checkpoint
+    if valid_loss < best_valid_loss:
+        best_valid_loss = valid_loss
+        torch.save(model.state_dict(), "checkpoints/test.pth")
 
-## test model (load from best checkpoint)
+## TODO: test model (load from best checkpoint)
 
-## plot curves
+## TODO: plot curves
 
-## save metrics + plot
+## TODO: save metrics + plot
 
