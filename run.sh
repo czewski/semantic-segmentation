@@ -20,16 +20,16 @@
 #         done
 
 # Experiment 2 - img size
-# for resize in 128 256 512; do
-#     python3 main.py \
-#         --root 'data' \
-#         --batch_size 8 \
-#         --epoch 10 \
-#         --lr 0.001\
-#         --mask_percentage 0.3 \
-#         --resize_to $resize \
-#         --data_aug 0 
-#     done
+for resize in  64; do #128 256 512
+    python3 main.py \
+        --root 'data' \
+        --batch_size 8 \
+        --epoch 10 \
+        --lr 0.001 \
+        --mask_percentage 0.3 \
+        --resize_to  $resize \
+        --data_aug 0 
+    done
 
 # # Experiment 3 - batch_size
 # for batch in 8 16 32 64; do
@@ -56,14 +56,14 @@
 #     done
 
 # Experiment 5
-for gamma in 1 3; do #
-        python3 main.py \
-            --root 'data' \
-            --batch_size 8 \
-            --epoch 10 \
-            --lr 0.001\
-            --mask_percentage 0.3 \
-            --resize_to 256 \
-            --data_aug 0  \
-            --gamma $gamma 
-        done
+# for gamma in 1 3; do #
+#         python3 main.py \
+#             --root 'data' \
+#             --batch_size 8 \
+#             --epoch 10 \
+#             --lr 0.001\
+#             --mask_percentage 0.3 \
+#             --resize_to 256 \
+#             --data_aug 0  \
+#             --gamma $gamma 
+#         done
