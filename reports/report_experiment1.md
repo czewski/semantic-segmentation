@@ -10,6 +10,18 @@ Logically having more points should lead to better results, I want to check if t
 ### Experimental process: 
 Using a bash script to change the values by argument parsing in the python main runner.
 
+```
+        --root 'data' \
+        --batch_size 8 \
+        --epoch 10 \
+        --lr 0.001 \
+        --mask_percentage $mask \
+        --resize_to 256 \
+        --gamma 2
+```
+
+The model selected for the training was "deeplabv3_resnet50" with a change in the last layer to respect the number of classes in the LoveDA dataset. 
+
 # Results: 
 
 #### Loss curve
@@ -36,12 +48,12 @@ But still, both validation and train losses are decreasing, seems like the model
 
 #### Stats 
 
-| Percentage | Loss    | IoU    | 
-| :---:   | :---: | :---: | 
-| 10%  | 0.2156   | -   |  
-| 30% | 0.2040   | -   |
-| 70% | 0.2041   | -   | 
-| 100% | 0.2034   | -   | 
+| Percentage | Loss    | 
+| :---:   | :---: | 
+| 10%  | 0.2156   |  
+| 30% | 0.2040   |   
+| 70% | 0.2041   |
+| 100% | 0.2034   | 
 
 #### Conclusion
 

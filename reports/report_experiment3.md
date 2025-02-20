@@ -7,16 +7,26 @@ Loading pre-trained weights from "deeplabv3_resnet50".
 Using transfer learning generally improves model performance. 
 
 ### Experimental process: 
-Using a bash script to change the values by argument parsing in the python main runner.
+Same process from previous experiment, but with the following parameters: 
+
+```
+        --root 'data' \
+        --batch_size 8 \
+        --epoch 10 \
+        --lr 0.001 \
+        --mask_percentage 0.3 \
+        --resize_to  256 \
+        --gamma $gamma
+```
 
 ### Results
 
 #### Stats 
 
-| Pre-Trained Weights | Loss    | IoU    | 
-| :---:   | :---: | :---: | 
-| True  | 0.2040  | -   |  
-| False | 0.2718 | -   |
+| Pre-Trained Weights | Loss    |  
+| :---:   | :---: | 
+| True  | 0.2040  |  
+| False | 0.2718 | 
 
 #### Conclusion
 

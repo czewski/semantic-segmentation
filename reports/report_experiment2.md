@@ -7,7 +7,17 @@ Using different image sizes during training.
 I think that the image size won't interfere much in the training results, but smaller images may make the model train faster. 
 
 ### Experimental process: 
-Using a bash script to change the values by argument parsing in the python main runner.
+Same process from previous experiment, but with the following parameters: 
+
+```
+        --root 'data' \
+        --batch_size 8 \
+        --epoch 10 \
+        --lr 0.001 \
+        --mask_percentage 0.3 \
+        --resize_to  $resize \
+        --gamma 2
+```
 
 ### Results
 
@@ -17,32 +27,32 @@ Similar to Experiment 1, here we can also see a bit of disturbance during traini
 
     - 64?
 
-![10]()
+![64](https://i.imgur.com/VZumd8L.png)
 
     - 128 
 
-![10]()
+![128](https://i.imgur.com/H6HDbyg.png)
 
     - 256
 
-![30]()
+![256](https://i.imgur.com/X63ikp2.png)
     
-    - 512 (This took around 5 hours to run for 5 epochs, and then my computer ran out of VRAM)
+    - 512 (This took around 10 hours to run for 5 epochs)
 
-![70]()
+![512](https://i.imgur.com/aIwpQ3a.png)
 
 #### Stats 
 
-| Image Size | Loss    | IoU    | 
+| Image Size | Loss    | Time (min) | 
 | :---:   | :---: | :---: | 
-| 64  | -   | -   |  
-| 128  | 0.2341   | -   |  
-| 256 | 0.2089  | -   |
-| 512 |   - | -   | 
+| 64  | -   |  -   | 5.8  | 
+| 128  | 0.2341   |  12.9   | 
+| 256 | 0.2089  |  19.7  | 
+| 512 | 0.3127 |  580.8  | 
 
 #### Conclusion
 
-Having bigger resolution dramatically improve the performance of the model. 
+Having bigger resolution dramatically improve the performance of the model at computational cost. Even that I was only able to train just for 5 epochs with 512x512, we can observe in the loss curve that the training was very linear, without the spikes shown in other figures, and even with the high loss value the model have room for improvements with more training time. 
 
 
 

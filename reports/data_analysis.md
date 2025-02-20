@@ -3,6 +3,8 @@
 ## Description of data
 The [LoveDA Dataset](https://www.researchgate.net/publication/355390292_LoveDA_A_Remote_Sensing_Land-Cover_Dataset_for_Domain_Adaptive_Semantic_Segmentation) contain urban and rural remote sensing images from cities of China. 
 
+For this assessment, I selected only the urban part of the dataset, and the split of Train/Test/Validation was already done by the publishers of the data. 
+
 >  Basic statistics: 
 
 | Attempt | Number of Images    | Number of Masks    |

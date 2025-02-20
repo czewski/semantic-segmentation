@@ -1,12 +1,6 @@
 # Meriti Technical Assessment
 
 ## TODO: 
-- 64 in exp 2
-- images in exp 2
-
-- Check if mask is returning zeros or 255
-- TODO: Comparison between some prediction and ground truth: 
-- Histogram matching +  Data augmentation? 
 
 ## Task 1
 - [Partial Cross Entropy Code](loss/partial_cross_entropy.py)
@@ -32,6 +26,8 @@
         - [Report Experiment 5](reports/report_experiment5.md) -->
 
 - Results: 
+    - [Inference](inference.py)
+    ![Inference](https://i.imgur.com/YrcBwVp.png)
     - [Stats](stats/)
     - [Losses](loss_curves/)
     - [Checkpoints](checkpoints/)
@@ -40,7 +36,7 @@
 - Change the value of "alpha" inside the pCE loss function. 
 - Try using a "kernel" to simulate bigger point annotations. 
 - Unbalanced data? Maybe use wcce (weighted categorical cross-entropy), having an alpha weight for each class. 
-- Some data augmentation process. 
+- Some data augmentation process (Histogram matching?). 
 - Different model architectures. 
 
 ## References 

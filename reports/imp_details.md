@@ -29,16 +29,15 @@ Then I searched for a more efficient approach, and got:
 This approach generates a random bitwise mask, then applies it to the origin mask. 
 
 ##### How? 
-First, generate random values with torch.rand(). 
-Then the topk function is used to filter out the higher values from the random generation (using num_points to respect the max values).
-A placeholder zeros mask is created.
-The scatter() function is used to apply all active values from the topk indices as 1 in the binary mask.
-The view() operation readjust the shape to respect the original mask shape. 
-And finally we can copy the values from the original mask, to the positive elements in the binary mask, (if the value is 1, copy the mask value-1, if the value is 0, the value goes to 255).
+- First, generate random values with torch.rand(). 
+- Then the topk function is used to filter out the higher values from the random generation (using num_points to respect the max values).
+- A placeholder zeros mask is created.
+- The scatter() function is used to apply all active values from the topk indices as 1 in the binary mask.
+- The view() operation readjust the shape to respect the original mask shape. 
+- And finally we can copy the values from the original mask, to the positive elements in the binary mask, (if the value is 1, copy the mask value-1, if the value is 0, the value goes to 255).
 
 I had some weird problems using -1 or 0, so I decided to use 255 as the ignore_index, (the pCE loss implementation uses the 255 value to create the GT labeled mask, and to ignore the index in the F.CE)
 
 I'm reducing 1 from the mask value (classes), so the model also ignores the class 0 (background). 
-
 
 ## TODO: Comparison between some prediction and ground truth: 

@@ -7,17 +7,26 @@ Changing values for the "gamma" inside the pCE loss function.
 While reading the paper the author said that higher values improve the modulation factor inside focal loss, and using gamma = 0 is the same that using pure CE. 
 
 ### Experimental process: 
-Using a bash script to change the values by argument parsing in the python main runner.
+Same process from previous experiment, but with the following parameters: 
 
+```
+        --root 'data' \
+        --batch_size 8 \
+        --epoch 10 \
+        --lr 0.001 \
+        --mask_percentage 0.3 \
+        --resize_to  256 \
+        --gamma $gamma
+```
 ### Results
 
 #### Stats 
 
-| Pre-Trained Weights | Loss    | IoU    | 
-| :---:   | :---: | :---: | 
-| 1  | 0.3060  | -   |  
-| 2 | 0.2040 | -   |
-| 3 | 0.2109 | -   |
+| Pre-Trained Weights | Loss    | 
+| :---:   | :---: | 
+| 1  | 0.3060  |  
+| 2 | 0.2040 | 
+| 3 | 0.2109 |
 
 #### Conclusion
 
