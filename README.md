@@ -33,7 +33,8 @@
         - [Report Experiment 3](reports/report_experiment3.md)
     - Loading pre-trained weights 
         - [Report Experiment 4](reports/report_experiment4.md)
-
+    - Changing gamma inside pCE
+        - [Report Experiment 5](reports/report_experiment5.md)
 
 Do at least one inference, and check visuals
 
