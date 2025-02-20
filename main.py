@@ -24,11 +24,12 @@ from loss import partial_cross_entropy
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default='data')
 parser.add_argument('--batch_size', type=int, default=8)
-parser.add_argument('--epoch', type=int, default=1)
+parser.add_argument('--epoch', type=int, default=10)
 parser.add_argument('--lr', type=float, default=0.001)  
 parser.add_argument('--mask_percentage', type=float, default=0.3)  
 parser.add_argument('--resize_to', type=int, default=256)  
 parser.add_argument('--data_aug', type=int, default=0)  
+parser.add_argument('--gamma', type=int, default=2)  
 args = parser.parse_args()
 print(args)
 
@@ -46,26 +47,26 @@ train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=Tru
 valid_loader = DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=True)
 #test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=True)
 
+# define model
+model = models.deeplabv3_resnet50(pretrained=True)   
+#https://pytorch.org/vision/0.16/models/generated/torchvision.models.segmentation.deeplabv3_resnet50.html#torchvision.models.segmentation.DeepLabV3_ResNet50_Weights
+#weights=models.DeepLabV3_ResNet50_Weights.COCO_WITH_VOC_LABELS_V1
 
-## define model (TODO: later will implement a CNN model)
-model = models.deeplabv3_resnet50(pretrained=True)  
 # model.eval() 
 #swap last layer for correct number of classes # 7 = num_class
 model.classifier[4] = torch.nn.Conv2d(256, 7, kernel_size=(1, 1), stride=(1, 1)) 
 model = model.to(device)
-# print(model.classifier)
 
 ## define loss, optimizer #criterion = nn.CrossEntropyLoss()
-criterion = partial_cross_entropy.PartialCrossEntropyLoss()
+criterion = partial_cross_entropy.PartialCrossEntropyLoss(gamma=args.gamma)
 optimizer = optim.Adam(params=model.parameters(), lr=args.lr)
 
-## TODO: define variable for metrics (right now will use only loss)
+## define variable for metrics (right now will use only loss)
 best_valid_loss = float('inf')
 best_iou = 0
 losses, valid_losses = [], []
 timestamp = datetime.now().strftime("%d_%m_%Y_%H:%M:%S")
 start_time = time.time()
-
 
 def validate(loader, model, criterion):
     model.eval()
@@ -80,9 +81,9 @@ def validate(loader, model, criterion):
             output = model(img)['out']
             loss = criterion(output, random_mask)  
             sum_valid_loss += loss.item()
-            ious.append(metrics.Iou(random_mask, output))
+            #ious.append(metrics.Iou(random_mask, torch.argmax(output, dim=1)))
 
-    return (sum_valid_loss / len(loader)), torch.mean(ious)
+    return (sum_valid_loss / len(loader)), 0#, torch.mean(ious)
 
 
 for epoch in tqdm(range(args.epoch)):
@@ -91,20 +92,18 @@ for epoch in tqdm(range(args.epoch)):
     sum_epoch_loss = 0
     for i, (img, msk) in enumerate(tqdm(train_loader)):
         img, msk = img.to(device), msk.to(device)
-        # print(img.size()) # (batch_size, channels, h, w) (10, 3, 129, 128)
-        # print(msk.size())
+        # print(img.size()) # (b, c, h, w) (10, 3, 256, 256)
+        # print(msk.size()) # (b, c, h, w) (10, 1, 256, 256)
 
         ## random samples for the mask 
-
-        # there was a 0 class, check what happened to that. 
         random_mask = random_points.create_random_points(msk, args.mask_percentage, 1) 
-        random_mask = random_mask.squeeze(1).long().to(device=device)
+        random_mask = random_mask.squeeze(1).long().to(device=device) #(10, 256, 256) squeeze to remove C
         # random_points.plot_mask(random_mask, 0)
         # random_points.plot_mask(random_mask, 1)
         # print(random_mask)
 
-        output = model(img)['out']
-        # print(output.size()) # (batch_size, N_CLASSES, H, W)
+        output = model(img)['out'] # model outputs a dict
+        # print(output.size()) # (B, N_CLASSES, H, W)
         # print(random_mask.size())
         # print("hi")
 
@@ -118,10 +117,9 @@ for epoch in tqdm(range(args.epoch)):
 
     losses.append(sum_epoch_loss/len(train_loader))
 
-    ## TODO: validation loss
+    ## validation loss
     valid_loss, iou = validate(valid_loader, model, criterion)
     valid_losses.append(valid_loss)
-
 
     ## save checkpoint
     if valid_loss < best_valid_loss:
