@@ -1,6 +1,9 @@
 # Meriti Technical Assessment
 
 ## TODO: 
+- 64 in exp 2
+- images in exp 2
+
 - Check if mask is returning zeros or 255
 - TODO: Comparison between some prediction and ground truth: 
 - Histogram matching +  Data augmentation? 
@@ -36,8 +39,8 @@
 ## Hypothesis to test in the future: 
 - Change the value of "alpha" inside the pCE loss function. 
 - Try using a "kernel" to simulate bigger point annotations. 
-- Unbalanced data? Maybe use wcce (weighted categorical cross-entropy), basically have an alpha weight for each class. 
-- More data augmentation process. 
+- Unbalanced data? Maybe use wcce (weighted categorical cross-entropy), having an alpha weight for each class. 
+- Some data augmentation process. 
 - Different model architectures. 
 
 ## References 

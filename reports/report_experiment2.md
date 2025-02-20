@@ -1,7 +1,7 @@
-## Experiment 1
+## Experiment 2
 ### Method: 
 Using different image sizes during training.
-    - 128 256 512
+    - 64 128 256 512
 
 ### Purpose: 
 I think that the image size won't interfere much in the training results, but smaller images may make the model train faster. 

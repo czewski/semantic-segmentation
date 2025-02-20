@@ -29,9 +29,7 @@ class LoveDADataset(Dataset):
         ])
         self.transform_mask = transforms.Compose([
             transforms.Resize((self.resize_to, self.resize_to), interpolation=Image.NEAREST),  
-            # this changes anything?
             # if not nearest, than weird behavior can happen with grayscale https://discuss.pytorch.org/t/weird-behaviour-when-mapping-masks/99798/8
-            #transforms.ToTensor() # to tensor actually normalizes, so i lose direct class data
         ])
 
     def __len__(self):
