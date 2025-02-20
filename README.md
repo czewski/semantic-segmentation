@@ -1,7 +1,5 @@
 # Meriti Technical Assessment
 
-## TODO: 
-
 ## Task 1
 - [Partial Cross Entropy Code](loss/partial_cross_entropy.py)
 - [How I implemented](reports/pce_analysis.md)
