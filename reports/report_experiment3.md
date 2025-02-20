@@ -1,17 +1,25 @@
-does it make it faster? should store the time of execution. 
+## Experiment 3
+### Method: 
+Loading pre-trained weights from "deeplabv3_resnet50".
+    - True, False
 
+### Purpose: 
+Using transfer learning generally improves model performance. 
 
-## Experiment 1
-# Method: Applying data augmentation to have different images. 
-    - 128 256 512
+### Experimental process: 
+Using a bash script to change the values by argument parsing in the python main runner.
 
-# Purpose: .
+### Results
 
-# Experimental process: Guarantee that there is no data leakage, by using augmentation only in train data. Using a bash script to change the values by argument parsing in the python main runner.
+#### Stats 
 
-# Results: 
+| Pre-Trained Weights | Loss    | IoU    | 
+| :---:   | :---: | :---: | 
+| True  | 0.2040  | -   |  
+| False | 0.2718 | -   |
 
-- Loss curve
-- Stats 
-- Comparison
+#### Conclusion
 
+Importing weights from Resnet50 model improves the performance by ~33% (in terms of loss value).
+
+Checking the PyTorch page, they say that "These weights were trained on a subset of COCO, using only the 20 categories that are present in the Pascal VOC dataset". 
