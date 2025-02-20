@@ -19,7 +19,9 @@ Looking at the training curves we can observe a lot of disturbance during the tr
 But still, both validation and train losses are decreasing, seems like the model is generalizing well. 
 
     - 10% 
+
     ![alt text](/loss_curves/19_02_2025_14:39:45_loss_curve.png)
+    
     - 30% 
     ![alt text](loss_curves/19_02_2025_14:59:52_loss_curve.png)
     - 70% 
