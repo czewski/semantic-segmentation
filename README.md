@@ -1,4 +1,4 @@
-# Meriti Technical Assessment
+# Semantic Segmentation
 
 ## Task 1
 - [Partial Cross Entropy Code](loss/partial_cross_entropy.py)
